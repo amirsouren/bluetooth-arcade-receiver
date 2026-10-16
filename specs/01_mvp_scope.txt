@@ -1,0 +1,46 @@
+===============================================================================
+MVP SCOPE SPECIFICATION
+===============================================================================
+
+1. IN-SCOPE (MANDATORY MVP FEATURES)
+[F-01] Bluetooth Device Detection:
+       Detect when an Android smartphone connects over Bluetooth with A2DP sink capabilities.
+[F-02] A2DP Audio Streaming:
+       Confirm audio stream delivery from the Android phone directly to the 
+       laptop's active output sink (speakers/headphones).
+[F-03] AVRCP Playback Controls:
+       Interactive GUI buttons providing:
+       - Play / Pause (toggle)
+       - Next Track
+       - Previous Track
+[F-04] Live Metadata Ingestion:
+       Display current track metadata extracted via BlueZ:
+       - Track Title (auto-scroll/marquee if overflowing)
+       - Artist Name
+       - Album Name
+       - Playing/Paused status indicator
+[F-05] Retro Arcade UI:
+       - Compact frameless window (~380x160 px)
+       - Neon / Cyberpunk theme palette
+       - Custom pixel-style or sleek monospace font
+       - Close (X) and Minimize/Pin buttons
+       - Draggable header
+[F-06] Connection State Feedback:
+       Visual UI indicators for:
+       - Disconnected / Idle (Waiting for Bluetooth device)
+       - Connected / Idle
+       - Playing / Paused
+
+2. SECONDARY (PHASE 2 / FAST-FOLLOW ENHANCEMENTS)
+[F-07] System Output Selector: Dropdown to switch between Laptop Speakers, HDMI, or USB DAC via `wpctl`.
+[F-08] Progress Bar & Track Duration: Real-time track position if AVRCP position signals are reported.
+[F-09] Cover Art Extraction: Fetching embedded album art if exposed by player, or online API fallback.
+[F-10] System Tray Integration: Minimize to tray icon with right-click quit/restore menu.
+
+3. EXPLICITLY OUT-OF-SCOPE FOR MVP
+- Full Next Track Queue Inspection: Android/AVRCP standard does not expose upcoming track queues.
+- Bluetooth Device Discovery & Initial PIN Pairing: Pairing must be handled by Ubuntu's native 
+  Bluetooth settings initially to avoid permission/agent complexity in MVP.
+- Multi-device simultaneous audio mixing.
+- iOS-specific feature parity testing (focus is Android-only).
+===============================================================================

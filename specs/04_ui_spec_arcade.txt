@@ -1,0 +1,50 @@
+===============================================================================
+UI/UX DESIGN SPECIFICATION: ARCADE MINI-PLAYER
+===============================================================================
+
+1. WINDOW GEOMETRY & BEHAVIOR
+- Target Size: Width 390px, Height 160px (Non-resizable).
+- Window Flags:
+  - `Qt.FramelessWindowHint`: Removes standard OS window borders.
+  - `Qt.WindowStaysOnTopHint`: Stays visible above code editors/browser.
+- Dragging: The custom top status bar area acts as a drag handle to move the window.
+- Controls:
+  - Top-Right: [_] (Minimize to dock/tray), [X] (Close application).
+
+2. COLOR PALETTE
+- Base Canvas: #090a10 (Deep Void Black)
+- Frame / Borders: #1a1c2e (Dark Slate Blue) with 1px border #00e5ff (Glow Cyan)
+- Primary Text (Track Title): #00ffaa (Arcade Phosphor Green)
+- Secondary Text (Artist / Album): #ff007f (Cyberpunk Neon Pink)
+- Inactive / Subdued Text: #6c7086 (Muted Gray)
+- Playback Status Pill:
+  - Playing: Background #003322, Text #00ffaa
+  - Paused: Background #331122, Text #ff007f
+  - Disconnected: Background #222222, Text #888888
+
+3. TYPOGRAPHY
+- Header/Title Font: "Press Start 2P" or "VT323" (bundled in `assets/fonts/`).
+- Fallback: System Monospace ("Ubuntu Mono", "Courier New").
+- Sizing:
+  - Track Title: 12px (Uppercase, bold pixel style, horizontal auto-scroll if width > 200px)
+  - Artist Name: 10px (Regular monospace)
+  - Time / Status: 8px
+
+4. COMPONENT BREAKDOWN
++-------------------------------------------------------------------------+
+| [●] BT: CONNECTED [GALAXY S23]                  [−] [✕]                 |  <- Drag Area (Height: 24px)
++-------------------+-----------------------------------------------------+
+|                   | TITLE : STRANGER THINGS THEME                       |
+|   ART / CASSETTE  | ARTIST: KYLE DIXON & MICHAEL STEIN                  |
+|    ANIMATION      | STATUS: [ PLAYING ]                                 |
+|                   +-----------------------------------------------------+
+|    (90x90 px)     | [ |<< PREV ]    [ >/|| PLAY ]    [ NEXT >>| ]       |
++-------------------+-----------------------------------------------------+
+| FOOTER: PIPEWIRE SINK: [BUILT-IN AUDIO]                  VOL: 100%      |  <- Status Bar (Height: 20px)
++-------------------------------------------------------------------------+
+
+5. BUTTON INTERACTION STATES
+- Default: Border 1px solid #ff007f, Background: #140d1a, Text: #ff007f.
+- Hover: Background: #ff007f, Text: #090a10, Box-shadow / glow: 4px.
+- Pressed: Scaled to 0.95, Background: #cc0066.
+===============================================================================

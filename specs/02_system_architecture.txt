@@ -1,0 +1,71 @@
+===============================================================================
+SYSTEM ARCHITECTURE & DIRECTORY STRUCTURE
+===============================================================================
+
+1. LAYERED ARCHITECTURE
+
+       +-------------------------------------------------------------+
+       |                  PRESENTATION LAYER (QML)                   |
+       |  - ArcadeWindow.qml    - RetroButton.qml    - VUMeter.qml   |
+       +-------------------------------------------------------------+
+                                     │ (Qt Property Bindings / Signals)
+                                     ▼
+       +-------------------------------------------------------------+
+       |             UI CONTROLLER LAYER (PySide6 / Python)          |
+       |  - AppController (QObject exposing props to QML)             |
+       +-------------------------------------------------------------+
+                                     │ (Python Events / Observer)
+                                     ▼
+       +-------------------------------------------------------------+
+       |                      SERVICES LAYER                         |
+       |  - BluetoothService     - MediaControlService               |
+       |  - AudioRoutingService  - MetadataCache                     |
+       +-------------------------------------------------------------+
+                                     │
+                   ┌─────────────────┴─────────────────┐
+                   ▼                                   ▼
+       +------------------------+          +------------------------+
+       |  System D-Bus (BlueZ)  |          |  PipeWire / WirePlumber|
+       |  org.bluez.MediaPlayer |          |  (Audio Sink routing)  |
+       +------------------------+          +------------------------+
+
+2. DIRECTORY TREE STRUCTURE
+
+bluetooth-arcade-receiver/
+├── assets/
+│   ├── fonts/
+│   │   └── PressStart2P-Regular.ttf
+│   ├── icons/
+│   │   ├── play.svg
+│   │   ├── pause.svg
+│   │   ├── next.svg
+│   │   └── prev.svg
+│   └── images/
+│       └── cassette_fallback.png
+├── src/
+│   ├── __init__.py
+│   ├── main.py                     # Entry point, initializes GLib & Qt loop
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── config.py               # Constants, themes, defaults
+│   │   └── event_bus.py            # Simple pub-sub or signal dispatcher
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── bluez_service.py        # System D-Bus listener for BlueZ 5
+│   │   ├── media_service.py        # Wrapper around org.bluez.MediaPlayer1
+│   │   └── audio_service.py        # Shell/API wrapper around PipeWire (wpctl)
+│   ├── ui/
+│   │   ├── __init__.py
+│   │   ├── controller.py           # QObject bridging backend to QML
+│   │   └── qml/
+│   │       ├── main.qml            # Root application window
+│   │       ├── ArcadePlayer.qml    # Main mini-player layout
+│   │       ├── NeonText.qml        # Custom reusable styled text
+│   │       ├── ArcadeButton.qml    # Interactive button with retro hover/click
+│   │       └── AnimatedCassette.qml# Fallback dynamic pixel animation
+├── tests/
+│   ├── mock_player.py              # Mock D-Bus player for offline UI testing
+│   └── test_bluez_service.py
+├── requirements.txt
+└── README.md
+===============================================================================

@@ -1,0 +1,35 @@
+===============================================================================
+TESTING AND VERIFICATION PLAN
+===============================================================================
+
+1. UNIT / COMPONENT TESTING (MOCK MODE)
+Goal: Verify UI and business logic without requiring physical Bluetooth hardware.
+Procedure:
+1. Run `tests/mock_player.py`.
+2. This script creates an emulated `AppController` pushing fake track data:
+   - Track 1: "Nightcall" - Kavinsky (Duration: 259000ms)
+   - Track 2: "Resonance" - HOME (Duration: 212000ms)
+3. Validate:
+   - Marquee text scrolling functions when title exceeds panel width.
+   - Play/Pause toggle flips icons and state pill.
+   - Window can be dragged across screens without flicker.
+
+2. REAL HARDWARE INTEGRATION TEST
+Setup: Ubuntu Desktop + Android Smartphone (e.g., Spotify, YouTube Music, or Soundcloud).
+Test Matrix:
+┌───┬────────────────────────────┬─────────────────────────────┬──────────┐
+│ID │ ACTION                     │ EXPECTED BEHAVIOR           │ STATUS   │
+├───┼────────────────────────────┼─────────────────────────────┼──────────┤
+│01 │ Connect BT from Phone      │ UI status: "CONNECTED"      │ [PENDING]│
+│02 │ Press Play on Phone        │ Audio plays from PC;        │ [PENDING]│
+│   │                            │ UI displays Title & Artist  │          │
+│03 │ Click Pause in UI          │ Phone pauses immediately    │ [PENDING]│
+│04 │ Click Next in UI           │ Phone jumps to next song;   │ [PENDING]│
+│   │                            │ UI metadata updates <500ms  │          │
+│05 │ Disconnect Phone BT        │ UI shows "DISCONNECTED";    │ [PENDING]│
+│   │                            │ Controls disable safely     │          │
+│06 │ Reconnect Phone BT         │ Auto-detects player;        │ [PENDING]│
+│   │                            │ Restores metadata           │          │
+└───┴────────────────────────────┴─────────────────────────────┴──────────┘
+===============================================================================
+

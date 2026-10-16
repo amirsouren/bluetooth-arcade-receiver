@@ -1,0 +1,51 @@
+===============================================================================
+BLUEZ 5 & D-BUS INTEGRATION SPECIFICATION
+===============================================================================
+
+1. D-BUS SERVICE & OBJECT PATHS
+- Bus Type: System Bus (`pydbus.SystemBus()` or `dbus.SystemBus()`)
+- Service Name: `org.bluez`
+- Root Manager Path: `/` using interface `org.freedesktop.DBus.ObjectManager`
+
+2. LOCATING THE ACTIVE MEDIA PLAYER
+To find the connected Android media player:
+1. Call `GetManagedObjects()` on `org.bluez` at `/`.
+2. Iterate through all object paths looking for interface:
+   `org.bluez.MediaPlayer1`
+3. Path format will match:
+   `/org/bluez/{adapter}/dev_{XX_XX_XX_XX_XX_XX}/player{N}`
+   (e.g., `/org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0`)
+
+3. MEDIA PLAYER INTERFACE DETAILS: `org.bluez.MediaPlayer1`
+Methods to Invoke:
+- `player.Play()`
+- `player.Pause()`
+- `player.Next()`
+- `player.Previous()`
+- `player.Stop()`
+
+Properties to Read / Monitor:
+- `Status` (String): "playing", "paused", "stopped", "forward-seek", "reverse-seek"
+- `Position` (UInt32): Current position in milliseconds.
+- `Track` (Dictionary of Variant):
+  - `Title` (String)
+  - `Artist` (String)
+  - `Album` (String)
+  - `Duration` (UInt32): Total track length in milliseconds.
+  - `TrackNumber` (UInt32)
+
+4. MONITORING CHANGES (SIGNALS)
+Listen to `org.freedesktop.DBus.Properties.PropertiesChanged` on the player object path.
+Signature:
+`PropertiesChanged(String interface_name, Dict changed_props, Array invalidated_props)`
+Filter for `interface_name == "org.bluez.MediaPlayer1"`:
+- If `"Track"` in `changed_props`: Emit new metadata to UI.
+- If `"Status"` in `changed_props`: Emit new playback status to UI.
+
+5. CAVEAT: GLIB EVENT LOOP CONCURRENCY
+Qt and GLib both have event loops. In Python with PySide6, either:
+a) Run the GLib loop (`GLib.MainLoop()`) in a background `threading.Thread(daemon=True)`.
+b) Or use a native async D-Bus library (`dbus-fast`) bridged into Qt via signals.
+Recommendation for MVP: Background worker thread running GLib loop forwarding updates 
+to Qt Controller via thread-safe Qt Signals.
+===============================================================================

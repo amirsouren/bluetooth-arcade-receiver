@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Bluetooth Arcade Receiver
+GenericName=A2DP Bluetooth Audio Receiver
+Comment=Retro arcade mini-player for streaming music from an Android phone
+# @PROJECT_DIR@ is replaced with this checkout's absolute path by install.sh.
+Exec=@PROJECT_DIR@/venv/bin/python -m src.main
+Path=@PROJECT_DIR@
+Icon=@PROJECT_DIR@/assets/icons/play.svg
+Terminal=false
+Categories=AudioVideo;
+Keywords=bluetooth;audio;a2dp;arcade;phone;speaker;
+StartupNotify=true
+

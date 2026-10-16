@@ -1,0 +1,15 @@
+# Bluetooth Arcade Receiver - runtime dependencies
+# (specs/09_implementation_checklist.txt -> STEP 1)
+#
+# Install with:  pip install -r requirements.txt
+#
+# NOTE: PyGObject compiles from source and requires system build deps
+# (pkg-config + libgirepository-1.0-dev / libgirepository-2.0-dev).
+# If those are unavailable, create the venv with --system-site-packages and
+# use the distro package `python3-gi` (see specs/08_risks_and_fallbacks.txt).
+PySide6>=6.5
+pydbus>=0.6.0
+PyGObject>=3.46
+
+# --- dev / test (optional) ---
+# pytest>=8.0

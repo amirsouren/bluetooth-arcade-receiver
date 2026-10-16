@@ -1,0 +1,50 @@
+===============================================================================
+BACKEND ARCHITECTURE & DATA CONTRACTS
+===============================================================================
+
+1. DATA MODELS (Python Dataclasses)
+
+@dataclass
+class TrackMetadata:
+    title: str = "No Track"
+    artist: str = "Unknown Artist"
+    album: str = "Unknown Album"
+    duration_ms: int = 0
+    track_number: int = 0
+
+@dataclass
+class PlayerState:
+    device_name: str = "Disconnected"
+    device_address: str = ""
+    status: str = "stopped"  # "playing", "paused", "stopped", "disconnected"
+    position_ms: int = 0
+    connected: bool = False
+
+2. QT BRIDGE CONTRACT (`controller.py`)
+The class `AppController(QObject)` must expose the following Qt Properties and Slots:
+
+Qt Properties (Notify signals included):
+- `trackTitle` (QString, read-only)
+- `trackArtist` (QString, read-only)
+- `playbackStatus` (QString, read-only: "playing", "paused", "idle", "disconnected")
+- `deviceName` (QString, read-only)
+- `isConnected` (bool, read-only)
+- `positionMs` (int, read-only)
+- `durationMs` (int, read-only)
+
+Qt Slots (Callable from QML):
+- `play()` -> None
+- `pause()` -> None
+- `togglePlayPause()` -> None
+- `nextTrack()` -> None
+- `previousTrack()` -> None
+- `closeApp()` -> None
+- `minimizeApp()` -> None
+
+3. D-BUS EVENT DISPATCHER SPEC
+The `BluezService` thread communicates via callbacks or Qt Signals:
+- `sig_device_connected(device_name: str, device_path: str)`
+- `sig_device_disconnected()`
+- `sig_metadata_changed(metadata: TrackMetadata)`
+- `sig_status_changed(status: str)`
+===============================================================================

@@ -1,0 +1,34 @@
+===============================================================================
+PROJECT OVERVIEW: ARCADE BLUETOOTH AUDIO RECEIVER (UBUNTU DESKTOP)
+===============================================================================
+
+1. MISSION STATEMENT
+Build a lightweight, highly responsive, and visually appealing Linux desktop 
+Bluetooth Audio Receiver designed specifically for Ubuntu. The app transforms a 
+Linux PC/laptop into a retro/arcade-styled Bluetooth speaker system for Android 
+smartphones, featuring real-time playback control, track metadata display, and 
+compact on-screen presence.
+
+2. CORE PHILOSOPHY & OBJECTIVES
+- Hands-off Audio: Rely on modern Linux audio standards (PipeWire/WirePlumber) 
+  for high-fidelity, low-latency audio bridging.
+- Zero-Bloat, Native Feel: Avoid heavy runtimes (Electron/Chromium). Use Python 
+  with PySide6 (Qt Quick/QML) for GPU-accelerated rendering and low RAM usage (<80MB).
+- Arcade Aesthetic: Retro cyberpunk / arcade cabinet look: dark background, neon 
+  accents (cyan, hot pink, lime green), pixel/monospace typography, and animated 
+  state indicators (cassette/VU-meter fallback).
+- Modularity: Strict separation between the Linux OS/D-Bus layer and the UI layer.
+
+3. TARGET ENVIRONMENT
+- OS: Ubuntu 22.04 LTS / 24.04 LTS (Desktop)
+- Audio Subsystem: PipeWire with WirePlumber (default on modern Ubuntu)
+- Bluetooth Stack: BlueZ 5.x via System D-Bus
+- Remote Device Target: Android 10+ Smartphones (A2DP Source + AVRCP 1.4/1.6)
+- Target Window Mode: Frameless, Always-on-Top, draggable mini-widget (approx 380x160 px).
+
+4. TECH STACK SELECTION
+- Core Language: Python 3.10+
+- GUI Framework: PySide6 (Qt 6.x) with QML (QtQuick) for the frontend view.
+- IPC / System Layer: pydbus or dbus-fast + PyGObject (GLib MainLoop integration).
+- Audio Routing Control: Native PipeWire/PulseAudio tools (`wpctl`, `pactl`) via lightweight wrappers.
+===============================================================================

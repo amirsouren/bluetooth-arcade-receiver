@@ -1,0 +1,27 @@
+===============================================================================
+RISKS, EDGE CASES, AND ARCHITECTURAL FALLBACKS
+===============================================================================
+
+1. RISK: ANDROID DOES NOT SEND METADATA (OR DELAYS IT)
+- Cause: Some Android music apps (or battery savers) do not publish AVRCP metadata 
+  until playback starts, or send empty strings.
+- Fallback: The UI must never display empty blanks. If missing, default gracefully to:
+  `Title: "STREAMING AUDIO"` / `Artist: "<CONNECTED DEVICE NAME>"`.
+
+2. RISK: WIREPLUMBER DOES NOT AUTO-SWITCH OUTPUT
+- Cause: Default profile on Ubuntu might prioritize a different sink.
+- Fallback: Document command check in README:
+  `wpctl status` and verify `bluez_input.*` is mapped to default sink.
+  In Phase 2, provide explicit sink selection in the UI footer.
+
+3. RISK: THREAD RACE CONDITIONS (QT LOOP VS GLIB D-BUS LOOP)
+- Cause: Calling PySide6 UI elements directly from a D-Bus background thread will crash.
+- Fallback: Always use Qt's `Signal` and `Slot` mechanism with queued connections. 
+  The D-Bus listener thread must emit a Qt Signal; the UI thread absorbs it safely.
+
+4. RISK: ARTWORK / COVER ART NOT AVAILABLE OVER AVRCP
+- Reality: AVRCP Cover Art (BIP over Bluetooth) is rarely exposed cleanly in standard 
+  desktop BlueZ without complex OBEX daemons.
+- Fallback for MVP: Do not fail or block waiting for images. Display an animated 
+  pixel-art Cassette Tape SVG or VU-meter bars in place of the album artwork.
+===============================================================================

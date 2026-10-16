@@ -1,0 +1,49 @@
+===============================================================================
+PHASED IMPLEMENTATION PLAN
+===============================================================================
+
+PHASE 1: ENVIRONMENT & AUDIO RECEIVER VALIDATION (Estimated: Day 1)
+- Objective: Verify Ubuntu PipeWire setup as an A2DP sink without any custom code.
+- Tasks:
+  1. Pair Android phone with Ubuntu via GNOME Settings.
+  2. Verify WirePlumber has `bluez5.roles = [ a2dp_sink a2dp_source ... ]` enabled.
+  3. Play music on Android and confirm audio output through PC speakers.
+- Deliverable: Operational audio test pass.
+
+PHASE 2: D-BUS BACKEND & MEDIA CONTROLS (Estimated: Day 2)
+- Objective: Build headless Python module communicating with BlueZ over D-Bus.
+- Tasks:
+  1. Implement `bluez_service.py` to scan `/org/bluez` for `org.bluez.MediaPlayer1`.
+  2. Implement property change listeners for `Track` (Title, Artist) and `Status`.
+  3. Implement remote call functions: `Play()`, `Pause()`, `Next()`, `Previous()`.
+  4. Write a CLI harness (`tests/mock_player.py` or debug CLI loop) to test buttons.
+- Deliverable: Functional CLI script controlling Android playback.
+
+PHASE 3: ARCADE UI PROTOTYPING IN QML (Estimated: Day 3)
+- Objective: Create the visual layout with mock data in PySide6/QML.
+- Tasks:
+  1. Implement frameless, draggable window with custom title bar.
+  2. Load retro pixel font and apply styling:
+     - Background: #0f0f1b
+     - Primary Neon: #00ffcc (Cyan)
+     - Secondary Neon: #ff0055 (Hot Pink)
+  3. Build layout: Cover/Animation Box (Left), Info & Controls (Right).
+  4. Add pixelated button effects and track scrolling for long titles.
+- Deliverable: Interactive UI running with dummy playback state.
+
+PHASE 4: INTEGRATION (BACKEND + FRONTEND) (Estimated: Day 4)
+- Objective: Connect `bluez_service.py` signals to `controller.py` and QML.
+- Tasks:
+  1. Map D-Bus properties to Qt Properties (`trackTitle`, `trackArtist`, `isPlaying`).
+  2. Connect QML button `onClicked` to `controller.play_pause()`, `next()`, `prev()`.
+  3. Implement connection state banner (e.g. "WAITING FOR BLUETOOTH...").
+- Deliverable: Fully working end-to-end MVP app.
+
+PHASE 5: REFINEMENT & EDGE CASE HANDLING (Estimated: Day 5)
+- Objective: Stability, packaging, and smooth UX.
+- Tasks:
+  1. Graceful recovery on Bluetooth disconnect / reconnect.
+  2. Handle empty metadata (fallback to "Unknown Track" / "Unknown Artist").
+  3. Create desktop launcher entry (`bluetooth-arcade.desktop`).
+- Deliverable: Polished, distributable local build.
+===============================================================================

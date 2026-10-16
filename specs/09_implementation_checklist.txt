@@ -1,0 +1,36 @@
+===============================================================================
+DEVELOPER IMPLEMENTATION CHECKLIST (STEP-BY-STEP)
+===============================================================================
+
+[x] STEP 1: PROJECT SETUP
+    [x] Create project directory layout matching `02_system_architecture.txt`.
+    [x] Create Python virtual environment: `python3 -m venv venv`.
+    [x] Install dependencies: `pip install PySide6 pydbus PyGObject`.
+    [x] Verify access to system D-Bus: execute test query to `org.bluez`.
+
+[x] STEP 2: D-BUS BACKEND ENGINE
+    [x] Implement `src/services/bluez_service.py`.
+    [x] Add `ObjectManager` listener to detect when `MediaPlayer1` appears/disappears.
+    [x] Add `PropertiesChanged` signal listener to capture `Track` & `Status`.
+    [x] Implement control functions: `play()`, `pause()`, `next()`, `previous()`.
+
+[x] STEP 3: QT CONTROLLER BRIDGE
+    [x] Implement `src/ui/controller.py` inheriting from `QObject`.
+    [x] Define `@Property` bindings for `trackTitle`, `trackArtist`, `playbackStatus`.
+    [x] Define `@Slot` methods calling the backend `bluez_service`.
+    [x] Connect D-Bus thread signals to Qt Controller slots safely.
+
+[x] STEP 4: QML ARCADE FRONTEND
+    [x] Create `src/ui/qml/main.qml` with frameless window and drag handling.
+    [x] Import pixel font from `assets/fonts/`.
+    [x] Build layout matching `04_ui_spec_arcade.txt`:
+        - Top bar: Connection indicator + Drag zone + Close/Min buttons.
+        - Center-left: Retro animated cassette or fallback artwork box.
+        - Center-right: Track title marquee, artist text, status badge.
+        - Bottom controls: Neon-styled Prev, Play/Pause, Next buttons.
+
+[ ] STEP 5: VERIFICATION & LAUNCHER
+    [ ] Test end-to-end with paired Android phone.
+    [x] Handle edge-cases (bluetooth off, phone disconnects mid-song).
+    [x] Create local `.desktop` launcher for Ubuntu application menu.
+===============================================================================
